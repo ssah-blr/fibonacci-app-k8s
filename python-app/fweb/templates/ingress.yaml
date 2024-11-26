@@ -1,0 +1,25 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: {{ .Values.service.name }}-alb
+  namespace: {{ .Values.namespace }}
+  annotations:
+    alb.ingress.kubernetes.io/scheme: internal # Private ALB
+    alb.ingress.kubernetes.io/listen-ports: '[{"HTTP": 80}]' # Specify listener ports
+    alb.ingress.kubernetes.io/target-type: ip # Targets pods directly
+    alb.ingress.kubernetes.io/backend-protocol: HTTP # Protocol used by service
+    alb.ingress.kubernetes.io/load-balancer-attributes: |
+      idle_timeout.timeout_seconds=60
+    alb.ingress.kubernetes.io/subnets: "{{ .Values.ingress.subnets }}" # Specify private subnets
+spec:
+  rules:
+  - host: "{{ .Values.ingress.host }}"
+    http:
+      paths:
+      - path: /
+        pathType: Prefix
+        backend:
+          service:
+            name: {{ .Values.service.name }}
+            port:
+              number: {{ .Values.service.port }}
