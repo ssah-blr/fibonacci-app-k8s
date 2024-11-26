@@ -1,0 +1,6 @@
+apiVersion: v2
+name: fweb
+description: Helm chart for deploying a Python web application with different environments
+type: application
+version: 1.0.0
+appVersion: "latest"

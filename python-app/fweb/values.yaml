@@ -1,0 +1,28 @@
+# Default values for the fweb chart
+
+namespace: app-dev  # Default environment namespace
+replicaCount: 2  # Number of pods
+
+image:
+  repository: ssahblr/python-web
+  tag: latest
+  pullPolicy: IfNotPresent
+
+service:
+  name: fweb-svc
+  type: ClusterIP
+  port: 5500
+
+deployment:
+  appName: fweb
+  containerPort: 5500
+
+environments:
+  dev:
+    namespace: app-dev
+  qa:
+    namespace: app-qa
+  stg:
+    namespace: app-stg
+  pro:
+    namespace: app-prd

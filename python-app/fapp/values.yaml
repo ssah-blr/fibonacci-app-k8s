@@ -1,0 +1,28 @@
+# Default values for the fapp chart
+
+namespace: app-dev  # Default environment namespace
+replicaCount: 2  # Number of pods
+
+image:
+  repository: ssahblr/python-app
+  tag: latest
+  pullPolicy: IfNotPresent
+
+service:
+  name: fibonacci-app-service
+  type: ClusterIP
+  port: 5501
+
+deployment:
+  appName: fapp
+  containerPort: 5501
+
+environments:
+  dev:
+    namespace: app-dev
+  qa:
+    namespace: app-qa
+  stg:
+    namespace: app-stg
+  pro:
+    namespace: app-prd
