@@ -10,9 +10,10 @@ metadata:
     alb.ingress.kubernetes.io/backend-protocol: HTTP # Protocol used by service
     alb.ingress.kubernetes.io/load-balancer-attributes: |
       idle_timeout.timeout_seconds=60
-    alb.ingress.kubernetes.io/subnets: "{{ .Values.ingress.subnets }}" # Specify private subnets
+    alb.ingress.kubernetes.io/subnets: "subnet-07fc9d0778cc24b34,subnet-0066b10eba41f1c33" # Private subnets
 spec:
   rules:
+  {{- if .Values.ingress.host }}
   - host: "{{ .Values.ingress.host }}"
     http:
       paths:
@@ -23,3 +24,14 @@ spec:
             name: {{ .Values.service.name }}
             port:
               number: {{ .Values.service.port }}
+  {{- else }}
+  - http:
+      paths:
+      - path: /
+        pathType: Prefix
+        backend:
+          service:
+            name: {{ .Values.service.name }}
+            port:
+              number: {{ .Values.service.port }}
+  {{- end }}
